@@ -1,5 +1,6 @@
 package io.github.mrvictor42
 
+import io.github.mrvictor42.exception.UnsupportedMathOperationException
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -12,7 +13,7 @@ class MathController {
     @GetMapping("/sum/{numberOne}/{numberTwo}")
     fun sum(@PathVariable(value="numberOne") numberOne: String?, @PathVariable(value="numberTwo") numberTwo: String?): Double {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw Exception()
+            throw UnsupportedMathOperationException("Please set a numeric value!")
         }
         return convertToDouble(numberOne) + convertToDouble(numberTwo)
     }
