@@ -4,6 +4,7 @@ import io.github.mrvictor42.model.Person
 import io.github.mrvictor42.services.PersonServices
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -32,8 +33,7 @@ class PersonController {
     }
 
     //Outra forma de usar o @PostMapping
-    @RequestMapping(
-        method = [RequestMethod.POST],
+    @PostMapping(
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody person : Person) : Person {
@@ -46,7 +46,9 @@ class PersonController {
     }
 
     @DeleteMapping("/delete/{id}")
-    fun delete(@PathVariable("id") id : Long) {
-        return personServices.delete(id)
+    fun delete(@PathVariable("id") id : Long) : Any {
+
+        personServices.delete(id)
+        return ResponseEntity.noContent().build<Any>()
     }
 }

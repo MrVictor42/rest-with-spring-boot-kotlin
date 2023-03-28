@@ -1,5 +1,7 @@
-package io.github.mrvictor42.exception
+package io.github.mrvictor42.exception.handler
 
+import io.github.mrvictor42.exception.ExceptionResponse
+import io.github.mrvictor42.exception.ResourceNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -20,10 +22,10 @@ class CustomizedResponseEntityExceptionHandler : ResponseEntityExceptionHandler(
         return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
-    @ExceptionHandler(UnsupportedMathOperationException::class)
-    fun handleBadRequestExceptions(ex : Exception, request : WebRequest) : ResponseEntity<ExceptionResponse> {
+    @ExceptionHandler(ResourceNotFoundException::class)
+    fun resourceNotFoundException(ex : Exception, request : WebRequest) : ResponseEntity<ExceptionResponse> {
         val exceptionResponse = ExceptionResponse(Date(), ex.message, request.getDescription(false))
 
-        return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST)
+        return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.NOT_FOUND)
     }
 }
