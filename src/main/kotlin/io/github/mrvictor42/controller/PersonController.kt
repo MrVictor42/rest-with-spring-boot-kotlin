@@ -1,5 +1,6 @@
 package io.github.mrvictor42.controller
 
+import io.github.mrvictor42.data.vo.v1.PersonVO
 import io.github.mrvictor42.model.Person
 import io.github.mrvictor42.services.PersonServices
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,12 +24,12 @@ class PersonController {
     private lateinit var personServices: PersonServices // var service : PersonService = null
 
     @GetMapping("/{id}")
-    fun getPerson(@PathVariable("id") id : Long) : Person {
+    fun getPerson(@PathVariable("id") id : Long) : PersonVO {
         return personServices.findById(id)
     }
 
     @GetMapping("/people")
-    fun getPeopleList() : List<Person> {
+    fun getPeopleList() : List<PersonVO> {
         return personServices.findAll()
     }
 
@@ -36,12 +37,12 @@ class PersonController {
     @PostMapping(
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun create(@RequestBody person : Person) : Person {
+    fun create(@RequestBody person : PersonVO) : PersonVO {
         return personServices.create(person)
     }
 
     @PutMapping("/update", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun update(@RequestBody person : Person) : Person {
+    fun update(@RequestBody person : PersonVO) : PersonVO {
         return personServices.update(person)
     }
 
