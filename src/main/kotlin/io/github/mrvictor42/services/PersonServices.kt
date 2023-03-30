@@ -1,8 +1,10 @@
 package io.github.mrvictor42.services
 
 import io.github.mrvictor42.data.vo.v1.PersonVO
+import io.github.mrvictor42.data.vo.v2.PersonVO as PersonVOV2
 import io.github.mrvictor42.exception.ResourceNotFoundException
 import io.github.mrvictor42.mapper.DozerMapper
+import io.github.mrvictor42.mapper.custom.PersonMapper
 import io.github.mrvictor42.model.Person
 import io.github.mrvictor42.repository.PersonRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +16,8 @@ class PersonServices {
 
     @Autowired
     private lateinit var personRepository: PersonRepository
+    @Autowired
+    private lateinit var mapper : PersonMapper
     private val logger = Logger.getLogger(PersonServices::class.java.name)
 
     fun findById(id : Long) : PersonVO {
@@ -58,5 +62,12 @@ class PersonServices {
             ResourceNotFoundException("No records found for this ID!")
         }
         personRepository.delete(entity)
+    }
+
+    fun createV2(person: PersonVOV2): PersonVOV2 {
+        logger.info("Creating person with name ${ person.firstName }!")
+        val entity : Person = mapper.mapVOToEntity(person)
+
+        return mapper.mapEntityToVo(personRepository.save(entity))
     }
 }

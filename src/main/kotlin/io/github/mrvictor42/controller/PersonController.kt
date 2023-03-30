@@ -1,7 +1,7 @@
 package io.github.mrvictor42.controller
 
 import io.github.mrvictor42.data.vo.v1.PersonVO
-import io.github.mrvictor42.model.Person
+import io.github.mrvictor42.data.vo.v2.PersonVO as PersonVOV2
 import io.github.mrvictor42.services.PersonServices
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -35,6 +34,7 @@ class PersonController {
 
     //Outra forma de usar o @PostMapping
     @PostMapping(
+        "v1",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody person : PersonVO) : PersonVO {
@@ -51,5 +51,13 @@ class PersonController {
 
         personServices.delete(id)
         return ResponseEntity.noContent().build<Any>()
+    }
+
+    @PostMapping(
+        "/v2",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun createV2(@RequestBody person : PersonVOV2) : PersonVOV2 {
+        return personServices.createV2(person)
     }
 }
