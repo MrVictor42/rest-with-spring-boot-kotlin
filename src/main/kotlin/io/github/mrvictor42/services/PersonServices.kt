@@ -1,5 +1,6 @@
 package io.github.mrvictor42.services
 
+import io.github.mrvictor42.controller.PersonController
 import io.github.mrvictor42.data.vo.v1.PersonVO
 import io.github.mrvictor42.data.vo.v2.PersonVO as PersonVOV2
 import io.github.mrvictor42.exception.ResourceNotFoundException
@@ -8,6 +9,7 @@ import io.github.mrvictor42.mapper.custom.PersonMapper
 import io.github.mrvictor42.model.Person
 import io.github.mrvictor42.repository.PersonRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo
 import org.springframework.stereotype.Service
 import java.util.logging.Logger
 
@@ -25,7 +27,12 @@ class PersonServices {
         val person = personRepository.findById(id).orElseThrow {
             ResourceNotFoundException("No records found for this ID!")
         }
-        return DozerMapper.parserObject(person, PersonVO::class.java)
+        val personVO : PersonVO = DozerMapper.parserObject(person, PersonVO::class.java)
+        val withSelfRel = linkTo(PersonController::class.java).slash(personVO.key).withSelfRel()
+
+        personVO.add(withSelfRel)
+
+        return personVO
     }
 
     fun findAll() : List<PersonVO> {
@@ -43,8 +50,8 @@ class PersonServices {
     }
 
     fun update(person: PersonVO) : PersonVO {
-        logger.info("Updating person with ID ${ person.id }!")
-        val entity = personRepository.findById(person.id).orElseThrow {
+        logger.info("Updating person with ID ${ person.key }!")
+        val entity = personRepository.findById(person.key).orElseThrow {
             ResourceNotFoundException("No records found for this ID!")
         }
 
