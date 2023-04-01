@@ -27,7 +27,8 @@ class PersonController {
         return personServices.findById(id)
     }
 
-    @GetMapping("/people")
+    @GetMapping("/people",
+        produces = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE])
     fun getPeopleList() : List<PersonVO> {
         return personServices.findAll()
     }
@@ -35,13 +36,15 @@ class PersonController {
     //Outra forma de usar o @PostMapping
     @PostMapping(
         "v1",
-        consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE])
+        consumes = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE])
     fun create(@RequestBody person : PersonVO) : PersonVO {
         return personServices.create(person)
     }
 
-    @PutMapping("/update", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/update",
+        consumes = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE])
     fun update(@RequestBody person : PersonVO) : PersonVO {
         return personServices.update(person)
     }
@@ -55,8 +58,8 @@ class PersonController {
 
     @PostMapping(
         "/v2",
-        consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE])
+        consumes = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE])
     fun createV2(@RequestBody person : PersonVOV2) : PersonVOV2 {
         return personServices.createV2(person)
     }
