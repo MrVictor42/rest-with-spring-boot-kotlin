@@ -28,7 +28,7 @@ class PersonServices {
             ResourceNotFoundException("No records found for this ID!")
         }
         val personVO : PersonVO = DozerMapper.parserObject(person, PersonVO::class.java)
-        val withSelfRel = linkTo(PersonController::class.java).slash(personVO.key).withSelfRel()
+        val withSelfRel = linkTo(PersonController::class.java).slash(personVO.id).withSelfRel()
 
         personVO.add(withSelfRel)
 
@@ -39,19 +39,32 @@ class PersonServices {
         logger.info("Finding all people!")
         val persons = personRepository.findAll()
 
-        return DozerMapper.parserListObjects(persons, PersonVO::class.java)
+        val vos = DozerMapper.parserListObjects(persons, PersonVO::class.java)
+
+        vos.forEach { person ->
+            val withSelfRel = linkTo(PersonController::class.java).slash(person.id).withSelfRel()
+
+            person.add(withSelfRel)
+        }
+
+        return vos
     }
 
     fun create(person : PersonVO) : PersonVO {
         logger.info("Creating person with name ${ person.firstName }!")
         val entity : Person = DozerMapper.parserObject(person, Person::class.java)
 
-        return DozerMapper.parserObject(personRepository.save(entity), PersonVO::class.java)
+        val personVO : PersonVO = DozerMapper.parserObject(personRepository.save(entity), PersonVO::class.java)
+        val withSelfRel = linkTo(PersonController::class.java).slash(personVO.id).withSelfRel()
+
+        personVO.add(withSelfRel)
+
+        return personVO
     }
 
     fun update(person: PersonVO) : PersonVO {
-        logger.info("Updating person with ID ${ person.key }!")
-        val entity = personRepository.findById(person.key).orElseThrow {
+        logger.info("Updating person with ID ${ person.id }!")
+        val entity = personRepository.findById(person.id).orElseThrow {
             ResourceNotFoundException("No records found for this ID!")
         }
 
@@ -60,7 +73,12 @@ class PersonServices {
         entity.address = person.address
         entity.gender = person.gender
 
-        return DozerMapper.parserObject(personRepository.save(entity), PersonVO::class.java)
+        val personVO : PersonVO = DozerMapper.parserObject(personRepository.save(entity), PersonVO::class.java)
+        val withSelfRel = linkTo(PersonController::class.java).slash(personVO.id).withSelfRel()
+
+        personVO.add(withSelfRel)
+
+        return personVO
     }
 
     fun delete(id: Long) {
