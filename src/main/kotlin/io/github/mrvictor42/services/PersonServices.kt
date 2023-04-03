@@ -43,7 +43,6 @@ class PersonServices {
 
         vos.forEach { person ->
             val withSelfRel = linkTo(PersonController::class.java).slash(person.id).withSelfRel()
-
             person.add(withSelfRel)
         }
 
