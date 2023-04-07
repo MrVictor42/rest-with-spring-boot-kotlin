@@ -2,6 +2,7 @@ package io.github.mrvictor42.services
 
 import io.github.mrvictor42.controller.PersonController
 import io.github.mrvictor42.data.vo.v1.PersonVO
+import io.github.mrvictor42.exception.RequiredObjectsIsNullExceptions
 import io.github.mrvictor42.data.vo.v2.PersonVO as PersonVOV2
 import io.github.mrvictor42.exception.ResourceNotFoundException
 import io.github.mrvictor42.mapper.DozerMapper
@@ -49,7 +50,8 @@ class PersonServices {
         return vos
     }
 
-    fun create(person : PersonVO) : PersonVO {
+    fun create(person : PersonVO?) : PersonVO {
+        if(person == null) throw RequiredObjectsIsNullExceptions()
         logger.info("Creating person with name ${ person.firstName }!")
         val entity : Person = DozerMapper.parserObject(person, Person::class.java)
 
@@ -61,7 +63,8 @@ class PersonServices {
         return personVO
     }
 
-    fun update(person: PersonVO) : PersonVO {
+    fun update(person: PersonVO?) : PersonVO {
+        if(person == null) throw RequiredObjectsIsNullExceptions()
         logger.info("Updating person with ID ${ person.id }!")
         val entity = personRepository.findById(person.id).orElseThrow {
             ResourceNotFoundException("No records found for this ID!")

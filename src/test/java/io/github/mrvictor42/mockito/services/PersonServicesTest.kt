@@ -1,9 +1,13 @@
 package io.github.mrvictor42.mockito.services
 
+import io.github.mrvictor42.exception.RequiredObjectsIsNullExceptions
 import io.github.mrvictor42.repository.PersonRepository
 import io.github.mrvictor42.unittests.mapper.mocks.MockPerson
 import io.github.mrvictor42.services.PersonServices
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -51,17 +55,101 @@ class PersonServicesTest {
 
     @Test
     fun findAll() {
+        val list = inputObject.mockEntityList()
+
+        `when`(personRepository.findAll()).thenReturn(list)
+
+        val peopleList = service.findAll()
+
+        assertNotNull(peopleList)
+        assertEquals(14, peopleList.size)
+
+        val personOne = peopleList[1]
+
+        assertNotNull(personOne)
+        assertNotNull(personOne.id)
+        assertNotNull(personOne.links)
+        assertTrue(personOne.links.toString().contains("</person/1>;rel=\"self\""))
+        assertEquals("Address Test1", personOne.address)
+        assertEquals("First Name Test1", personOne.firstName)
+        assertEquals("Last Name Test1", personOne.lastName)
+        assertEquals("Female", personOne.gender)
+    }
+
+    @Test
+    fun createWithNullPerson() {
+        val exception : Exception = assertThrows(
+            RequiredObjectsIsNullExceptions::class.java
+        ) { service.create(null) }
+
+        val expectedMessage = "It's not allowed to persist a null object!!"
+        val actualMessage = exception.message
+
+        assertTrue(actualMessage!!.contains(expectedMessage))
     }
 
     @Test
     fun create() {
+        val entity = inputObject.mockEntity(1)
+
+        val persisted = entity.copy()
+        persisted.id = 1
+
+        `when`(personRepository.save(entity)).thenReturn(persisted)
+
+        val vo = inputObject.mockVO(1)
+        val result = service.create(vo)
+
+        assertNotNull(result)
+        assertNotNull(result.id)
+        assertNotNull(result.links)
+        assertTrue(result.links.toString().contains("</person/1>;rel=\"self\""))
+        assertEquals("Address Test1", result.address)
+        assertEquals("First Name Test1", result.firstName)
+        assertEquals("Last Name Test1", result.lastName)
+        assertEquals("Female", result.gender)
+    }
+
+    @Test
+    fun updateWithNullPerson() {
+        val exception : Exception = assertThrows(
+            RequiredObjectsIsNullExceptions::class.java
+        ) { service.update(null) }
+
+        val expectedMessage = "It's not allowed to persist a null object!!"
+        val actualMessage = exception.message
+
+        assertTrue(actualMessage!!.contains(expectedMessage))
     }
 
     @Test
     fun update() {
+        val entity = inputObject.mockEntity(1)
+
+        val persisted = entity.copy()
+        persisted.id = 1
+
+        `when`(personRepository.findById(1)).thenReturn(Optional.of(entity))
+        `when`(personRepository.save(entity)).thenReturn(persisted)
+
+        val vo = inputObject.mockVO(1)
+        val result = service.update(vo)
+
+        assertNotNull(result)
+        assertNotNull(result.id)
+        assertNotNull(result.links)
+        assertTrue(result.links.toString().contains("</person/1>;rel=\"self\""))
+        assertEquals("Address Test1", result.address)
+        assertEquals("First Name Test1", result.firstName)
+        assertEquals("Last Name Test1", result.lastName)
+        assertEquals("Female", result.gender)
     }
 
     @Test
     fun delete() {
+        val entity = inputObject.mockEntity(1)
+
+        `when`(personRepository.findById(1)).thenReturn(Optional.of(entity))
+        service.delete(1)
     }
 }
