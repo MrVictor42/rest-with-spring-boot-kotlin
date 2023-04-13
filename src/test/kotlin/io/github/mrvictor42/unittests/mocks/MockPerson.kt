@@ -1,4 +1,4 @@
-package io.github.mrvictor42.unittests.mapper.mocks
+package io.github.mrvictor42.unittests.mocks
 
 import java.util.ArrayList
 import io.github.mrvictor42.data.vo.v1.PersonVO

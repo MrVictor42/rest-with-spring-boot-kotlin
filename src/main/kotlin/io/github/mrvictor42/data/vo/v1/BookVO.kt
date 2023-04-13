@@ -10,7 +10,7 @@ import java.util.Date
 data class BookVO (
     @Mapping("id")
     @field:JsonProperty("id")
-    var key : Long = 0,
+    var id : Long = 0,
     var author : String = "",
     var launchDate : Date? = null,
     var price : Double = 0.0,

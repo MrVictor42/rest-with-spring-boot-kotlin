@@ -1,8 +1,8 @@
-package io.github.mrvictor42.mockito.services
+package io.github.mrvictor42.unittests.mockito.services
 
 import io.github.mrvictor42.exception.RequiredObjectsIsNullExceptions
 import io.github.mrvictor42.repository.PersonRepository
-import io.github.mrvictor42.unittests.mapper.mocks.MockPerson
+import io.github.mrvictor42.unittests.mocks.MockPerson
 import io.github.mrvictor42.services.PersonServices
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -46,7 +46,7 @@ class PersonServicesTest {
         assertNotNull(result)
         assertNotNull(result.id)
         assertNotNull(result.links)
-        assertTrue(result.links.toString().contains("</person/1>;rel=\"self\""))
+        assertTrue(result.links.toString().contains("</api/person/1>;rel=\"self\""))
         assertEquals("Address Test1", result.address)
         assertEquals("First Name Test1", result.firstName)
         assertEquals("Last Name Test1", result.lastName)
@@ -69,7 +69,7 @@ class PersonServicesTest {
         assertNotNull(personOne)
         assertNotNull(personOne.id)
         assertNotNull(personOne.links)
-        assertTrue(personOne.links.toString().contains("</person/1>;rel=\"self\""))
+        assertTrue(personOne.links.toString().contains("</api/person/1>;rel=\"self\""))
         assertEquals("Address Test1", personOne.address)
         assertEquals("First Name Test1", personOne.firstName)
         assertEquals("Last Name Test1", personOne.lastName)
@@ -103,7 +103,7 @@ class PersonServicesTest {
         assertNotNull(result)
         assertNotNull(result.id)
         assertNotNull(result.links)
-        assertTrue(result.links.toString().contains("</person/1>;rel=\"self\""))
+        assertTrue(result.links.toString().contains("</api/person/1>;rel=\"self\""))
         assertEquals("Address Test1", result.address)
         assertEquals("First Name Test1", result.firstName)
         assertEquals("Last Name Test1", result.lastName)
@@ -138,7 +138,7 @@ class PersonServicesTest {
         assertNotNull(result)
         assertNotNull(result.id)
         assertNotNull(result.links)
-        assertTrue(result.links.toString().contains("</person/1>;rel=\"self\""))
+        assertTrue(result.links.toString().contains("</api/person/1>;rel=\"self\""))
         assertEquals("Address Test1", result.address)
         assertEquals("First Name Test1", result.firstName)
         assertEquals("Last Name Test1", result.lastName)

@@ -25,7 +25,7 @@ class BookServices {
             ResourceNotFoundException("No records found for this ID!")
         }
         val bookVO : BookVO = DozerMapper.parserObject(book, BookVO::class.java)
-        val withSelfRel = linkTo(BookController::class.java).slash(bookVO.key).withSelfRel()
+        val withSelfRel = linkTo(BookController::class.java).slash(bookVO.id).withSelfRel()
 
         bookVO.add(withSelfRel)
 
@@ -39,7 +39,7 @@ class BookServices {
         val vos = DozerMapper.parserListObjects(books, BookVO::class.java)
 
         vos.forEach { book ->
-            val withSelfRel = linkTo(BookController::class.java).slash(book.key).withSelfRel()
+            val withSelfRel = linkTo(BookController::class.java).slash(book.id).withSelfRel()
             book.add(withSelfRel)
         }
 
@@ -52,7 +52,7 @@ class BookServices {
         val entity : Book = DozerMapper.parserObject(book, Book::class.java)
 
         val bookVO : BookVO = DozerMapper.parserObject(bookRepository.save(entity), BookVO::class.java)
-        val withSelfRel = linkTo(BookController::class.java).slash(bookVO.key).withSelfRel()
+        val withSelfRel = linkTo(BookController::class.java).slash(bookVO.id).withSelfRel()
 
         bookVO.add(withSelfRel)
 
@@ -61,8 +61,8 @@ class BookServices {
 
     fun update(book: BookVO?) : BookVO {
         if(book == null) throw RequiredObjectsIsNullExceptions()
-        logger.info("Updating Book with ID ${ book.key }!")
-        val entity = bookRepository.findById(book.key).orElseThrow {
+        logger.info("Updating Book with ID ${ book.id }!")
+        val entity = bookRepository.findById(book.id).orElseThrow {
             ResourceNotFoundException("No records found for this ID!")
         }
 
@@ -72,7 +72,7 @@ class BookServices {
         entity.launchDate = book.launchDate
 
         val BookVO : BookVO = DozerMapper.parserObject(bookRepository.save(entity), BookVO::class.java)
-        val withSelfRel = linkTo(BookController::class.java).slash(BookVO.key).withSelfRel()
+        val withSelfRel = linkTo(BookController::class.java).slash(BookVO.id).withSelfRel()
 
         BookVO.add(withSelfRel)
 

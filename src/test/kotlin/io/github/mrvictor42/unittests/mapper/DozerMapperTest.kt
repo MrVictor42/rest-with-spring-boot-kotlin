@@ -1,7 +1,7 @@
 package io.github.mrvictor42.unittests.mapper
 
 import org.junit.jupiter.api.BeforeEach
-import io.github.mrvictor42.unittests.mapper.mocks.MockPerson
+import io.github.mrvictor42.unittests.mocks.MockPerson
 
 class DozerMapperTest {
 

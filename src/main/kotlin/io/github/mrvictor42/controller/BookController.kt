@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController
 class BookController {
 
     @Autowired
-    private lateinit var bookServices: BookServices // var service : PersonService = null
+    private lateinit var bookServices: BookServices // var service : BookService = null
 
     @GetMapping("/{id}")
     @Operation(
@@ -142,7 +142,7 @@ class BookController {
 
     //Outra forma de usar o @PostMapping
     @PostMapping(
-        "v1/",
+        "create",
         consumes = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML],
         produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML])
     @Operation(
