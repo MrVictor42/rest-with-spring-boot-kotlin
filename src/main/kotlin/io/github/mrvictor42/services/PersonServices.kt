@@ -3,7 +3,6 @@ package io.github.mrvictor42.services
 import io.github.mrvictor42.controller.PersonController
 import io.github.mrvictor42.data.vo.v1.PersonVO
 import io.github.mrvictor42.exception.RequiredObjectsIsNullExceptions
-import io.github.mrvictor42.data.vo.v2.PersonVO as PersonVOV2
 import io.github.mrvictor42.exception.ResourceNotFoundException
 import io.github.mrvictor42.mapper.DozerMapper
 import io.github.mrvictor42.mapper.custom.PersonMapper
@@ -89,12 +88,5 @@ class PersonServices {
             ResourceNotFoundException("No records found for this ID!")
         }
         personRepository.delete(entity)
-    }
-
-    fun createV2(person: PersonVOV2): PersonVOV2 {
-        logger.info("Creating person with name ${ person.firstName }!")
-        val entity : Person = mapper.mapVOToEntity(person)
-
-        return mapper.mapEntityToVo(personRepository.save(entity))
     }
 }

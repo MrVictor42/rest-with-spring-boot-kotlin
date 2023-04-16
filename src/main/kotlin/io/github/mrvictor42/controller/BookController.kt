@@ -3,8 +3,6 @@ package io.github.mrvictor42.controller
 import io.github.mrvictor42.data.vo.v1.BookVO
 import io.github.mrvictor42.data.vo.v1.PersonVO
 import io.github.mrvictor42.services.BookServices
-import io.github.mrvictor42.data.vo.v2.PersonVO as PersonVOV2
-import io.github.mrvictor42.services.PersonServices
 import io.github.mrvictor42.util.MediaType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.ArraySchema

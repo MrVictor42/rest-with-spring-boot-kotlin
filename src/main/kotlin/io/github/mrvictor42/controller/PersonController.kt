@@ -1,7 +1,6 @@
 package io.github.mrvictor42.controller
 
 import io.github.mrvictor42.data.vo.v1.PersonVO
-import io.github.mrvictor42.data.vo.v2.PersonVO as PersonVOV2
 import io.github.mrvictor42.services.PersonServices
 import io.github.mrvictor42.util.MediaType
 import io.swagger.v3.oas.annotations.Operation
@@ -12,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+//@CrossOrigin
 @RestController
 @RequestMapping("/api/person/")
 @Tag(name = "People", description = "Endpoints for managing people")
@@ -29,6 +30,7 @@ class PersonController {
     @Autowired
     private lateinit var personServices: PersonServices // var service : PersonService = null
 
+    @CrossOrigin(origins = ["http://localhost:8000"])
     @GetMapping("/{id}")
     @Operation(
         summary = "Find a Person",
@@ -139,8 +141,9 @@ class PersonController {
     }
 
     //Outra forma de usar o @PostMapping
+//    @CrossOrigin(origins = ["http://localhost:8000", "https://erudio.com.br"])
     @PostMapping(
-        "v1/",
+        "create",
         consumes = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML],
         produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML])
     @Operation(
@@ -285,13 +288,5 @@ class PersonController {
 
         personServices.delete(id)
         return ResponseEntity.noContent().build<Any>()
-    }
-
-    @PostMapping(
-        "/v2",
-        consumes = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML],
-        produces = [MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML])
-    fun createV2(@RequestBody person : PersonVOV2) : PersonVOV2 {
-        return personServices.createV2(person)
     }
 }
