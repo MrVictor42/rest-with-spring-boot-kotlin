@@ -1,6 +1,7 @@
 package io.github.mrvictor42.exception.handler
 
 import io.github.mrvictor42.exception.ExceptionResponse
+import io.github.mrvictor42.exception.InvalidJwtAuthenticationExceptions
 import io.github.mrvictor42.exception.RequiredObjectsIsNullExceptions
 import io.github.mrvictor42.exception.ResourceNotFoundException
 import org.springframework.http.HttpStatus
@@ -24,16 +25,23 @@ class CustomizedResponseEntityExceptionHandler : ResponseEntityExceptionHandler(
     }
 
     @ExceptionHandler(ResourceNotFoundException::class)
-    fun resourceNotFoundException(ex : Exception, request : WebRequest) : ResponseEntity<ExceptionResponse> {
+    fun handleNotFoundException(ex : Exception, request : WebRequest) : ResponseEntity<ExceptionResponse> {
         val exceptionResponse = ExceptionResponse(Date(), ex.message, request.getDescription(false))
 
         return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.NOT_FOUND)
     }
 
     @ExceptionHandler(RequiredObjectsIsNullExceptions::class)
-    fun resourceBadRequestExceptions(ex : Exception, request : WebRequest) : ResponseEntity<ExceptionResponse> {
+    fun handleBadRequestExceptions(ex : Exception, request : WebRequest) : ResponseEntity<ExceptionResponse> {
         val exceptionResponse = ExceptionResponse(Date(), ex.message, request.getDescription(false))
 
         return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(InvalidJwtAuthenticationExceptions::class)
+    fun handleInvalidJwtAuthenticationExceptions(ex : Exception, request : WebRequest) : ResponseEntity<ExceptionResponse> {
+        val exceptionResponse = ExceptionResponse(Date(), ex.message, request.getDescription(false))
+
+        return ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.FORBIDDEN)
     }
 }
