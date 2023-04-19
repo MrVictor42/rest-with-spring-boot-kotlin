@@ -1,11 +1,13 @@
 package io.github.mrvictor42.security.jwt
 
+import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.github.mrvictor42.data.vo.v1.TokenVO
 import jakarta.annotation.PostConstruct
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import java.util.Base64
 import java.util.Date
 
@@ -41,11 +43,18 @@ class JwtTokenProvider(private val userDetailsService: UserDetailsService) {
         )
     }
 
-    private fun getRefreshToken(username: String, roles: List<String?>, now: Date): Any {
+    private fun getAccessToken(username: String, roles: List<String?>, now: Date, validity: Date): String {
+        val validityRefreshToken : Date = Date(now.time + validityInMilliSeconds * 3) //refresh token valido por 3 horas
 
+        return JWT.create()
+            .withClaim("roles", roles)
+            .withExpiresAt(validityRefreshToken)
+            .withSubject(username)
+            .sign(algorithm)
+            .trim()
     }
 
-    private fun getAccessToken(username: String, roles: List<String?>, now: Date, validity: Date): Any {
-
+    private fun getRefreshToken(username: String, roles: List<String?>, now: Date): String {
+        return ""
     }
 }
