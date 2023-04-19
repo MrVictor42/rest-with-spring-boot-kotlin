@@ -74,7 +74,7 @@ class JwtTokenProvider(private val userDetailsService: UserDetailsService) {
             .trim()
     }
 
-    private fun getAuthentication(token : String) : Authentication {
+    fun getAuthentication(token : String) : Authentication {
         val decodedJWT : DecodedJWT = decodedToken(token)
         val userDetails : UserDetails = userDetailsService.loadUserByUsername(decodedJWT.subject)
 
@@ -88,7 +88,7 @@ class JwtTokenProvider(private val userDetailsService: UserDetailsService) {
         return verifier.verify(token)
     }
 
-    private fun resolveToken(request : HttpServletRequest) : String? {
+    fun resolveToken(request : HttpServletRequest) : String? {
         val bearerToken : String = request.getHeader("Authorization")
 
         return if(!bearerToken.isNullOrBlank() && bearerToken.startsWith("Bearer ")) {
@@ -98,7 +98,7 @@ class JwtTokenProvider(private val userDetailsService: UserDetailsService) {
         }
     }
 
-    private fun validateToken(token : String) : Boolean {
+    fun validateToken(token : String) : Boolean {
         val decodedJWT : DecodedJWT = decodedToken(token)
 
         try {
